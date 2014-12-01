@@ -1,0 +1,155 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+ 
+namespace MonsterStats
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int info = -1;
+            bool message = false;
+           
+            List<Monster> monsters = new List<Monster>();
+            monsters.Add(new Monster("Orc", 3, 70, 25, 3.4f, 5.3f, 200, 40));
+            monsters.Add(new Monster("Imp", 0, 40, 15, 3.4f, 5.3f, 200, 40));
+            monsters.Add(new Monster("Mage", 2, 30, 25, 3.4f, 5.3f, 200, 40));
+            monsters.Add(new Monster("Thief", 2, 30, 20, 3.4f, 5.3f, 200, 40));
+            monsters.Add(new Monster("Assasin", 1, 20, 35, 3.4f, 5.3f, 200, 40));
+            monsters.Add(new Monster("Pieslinger", 2, 30, 10, 2.4f, 6.3f, 250, 35));
+            monsters.Add(new Monster("Hampus", 2, 20, 25, 2.4f, 4.3f, 150, 30));
+            monsters.Add(new Monster("Judas", 3, 10, 20, 2.6f, 4.1f, 200, 40));
+            monsters.Add(new Monster("Illidaian", 4, 90, 40, 8.2f, 5.3f, 200, 40));
+            monsters.Add(new Monster("Dragon", 4, 100, 45, 8.4f, 5.3f, 200, 40));
+            while (true)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.White;
+                info = -1;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Menu");
+                Console.WriteLine("-----------------------------");
+                for (int i = 0; i < monsters.Count(); i++)
+                {
+                    Console.WriteLine(i + 1 + ". " + monsters[i].Name);
+                }
+                Console.WriteLine("-----------------------------");
+ 
+                Console.WriteLine("Write number to see info");
+                if (message)
+                {
+                    Console.WriteLine("You have to type a nubmer between 1-10");
+                }
+                try
+                {
+                    info = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    message = true;
+                }
+                if (info < 0 || info > 10)
+                {
+                    message = true;
+                }
+                if (info == 0)
+                {
+                    message = false;
+                    Monster rndMonster = new Monster();
+                    Console.Clear();
+                    rndMonster.PrintInfo();
+                    Console.WriteLine("Press enter to go back");
+                    Console.ReadLine();
+                }
+                else if (info >= 1 && info <= 10)
+                {
+                    message = false;
+                    Console.Clear();
+                    monsters[info - 1].PrintInfo();
+                    Console.WriteLine("Press enter to go back");
+                    Console.ReadLine();
+                }
+            }
+ 
+        }
+    }
+}
+ 
+ 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+ 
+namespace MonsterStats
+{
+    class Monster
+    {
+        Random randomizer = new Random();
+        public string Name { get; set; }
+        public int Size { get; set; }
+        public int Hp { get; set; }
+        public int Damage { get; set; }
+        public float Attack { get; set; }
+        public float Defence { get; set; }
+        public int Exp { get; set; }
+        public int Gold { get; set; }
+ 
+        public Monster(string name, int size, int hp, int damage, float attack, float defence, int exp, int gold)
+        {
+            Name = name;
+            Size = size;
+            Hp = hp;
+            Damage = damage;
+            Attack = attack;
+            Defence = defence;
+            Exp = exp;
+            Gold = gold;
+        }
+        public Monster()
+        {
+            Name = "Random";
+            Size = randomizer.Next(0, 4);
+            Hp = randomizer.Next(1, 100);
+            Damage = randomizer.Next(1, 50);
+            Attack = (float)randomizer.Next(1, 100) / 10;
+            Defence = (float)randomizer.Next(1, 100) / 10;
+            Exp = (int)Attack + Hp + Damage + (int)Defence * (Size + 2) - 20;
+            Gold = Exp / 10;
+        }
+        public void PrintInfo()
+        {
+            string tempSize = "";
+            switch (Size)
+            {
+                case 0:
+                    tempSize = "Tiny";
+                    break;
+                case 1:
+                    tempSize = "Small";
+                    break;
+                case 2:
+                    tempSize = "Average";
+                    break;
+                case 3:
+                    tempSize = "Large";
+                    break;
+                case 4:
+                    tempSize = "Huge";
+                    break;
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("_____________________________________________");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("               " + tempSize + " " + Name);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Damage: " + Damage + "        Hitpoints: " + Hp);
+            Console.WriteLine("Attack: " + Attack + "      Defence: " + Defence);
+            Console.WriteLine("Drops: " + Gold + " Gold | " + Exp + " Exp");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("_____________________________________________");
+        }
+    }
+}
